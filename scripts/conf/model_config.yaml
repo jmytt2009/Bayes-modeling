@@ -1,0 +1,18 @@
+dir:
+  data: "data/simulated_deaths.csv" 
+  output: "output/"
+
+run:
+  device: "cpu" # "cpu" or "gpu"
+  save: False
+
+model:
+  name: "model_intercept"
+  sampler_config:
+    samples: 500
+    warmup: 500
+    thin: 1
+    chains: 2
+    chain_method: "sequential" # "sequential", "parallel" or "vectorized"
+    seed: 1
+    progressbar: True
