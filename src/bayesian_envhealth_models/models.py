@@ -39,9 +39,9 @@ def model_intercept(
 )
 @jaxtyped(typechecker=beartype)
 def model_age_time_interaction(
-    age_id: Int[Array, "data"],
-    time_id: Int[Array, "data"],
-    population: Int[Array, "data"],
+    age: Int[Array, "data"],
+    year: Int[Array, "data"],
+    pop: Int[Array, "data"],
     deaths: Optional[Int[Array, "data"]] = None,
 ) -> None:
     """
@@ -53,12 +53,12 @@ def model_age_time_interaction(
     - Binomial likelihood
     """
     N = len(pop)
-    N_age = len(np.unique(age_id))
-    N_t = len(np.unique(time_id))
-
+    N_age = len(np.unique(age))
+    N_t = len(np.unique(year))
+    
     # plates
     age_plate = numpyro.plate("age_groups", size=N_age, dim=-2)
-    time_plate = numpyro.plate("time", size=(N_t - 1), dim=-1)
+    time_plate = numpyro.plate("year", size=(N_t - 1), dim=-1)
 
     # hyperparameters
     slope = numpyro.sample("slope", dist.Normal(loc=0.0, scale=1.0))
@@ -89,7 +89,7 @@ def model_age_time_interaction(
 
     # likelihood
     with numpyro.plate("N", size=N):
-        mu_logit = latent_rate[age_id, time_id]
+        mu_logit = latent_rate[age, year]
         numpyro.sample(
             "deaths",
             dist.Binomial(total_count=pop, logits=mu_logit),

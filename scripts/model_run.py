@@ -45,7 +45,7 @@ def var_factory(model_name: str) -> list[str]:
     if model_name == "model_intercept":
         return ["deaths", "pop"]
     if model_name == "model_age_time_interaction":
-        return ["age_id", "time_id", "deaths", "population"]
+        return ["age", "year", "deaths", "pop"]
     if model_name == "model_age_space_time_race":
         # s1 is state, space is county, lookup is from state to county, time is year
         return [
@@ -67,7 +67,7 @@ def var_factory(model_name: str) -> list[str]:
 @beartype
 def load_data(data_path: str, vars: list[str]) -> dict[str, jnp.ndarray]:
     """Load data from data_path."""
-    vars = ["deaths", "pop"]
+    vars = ["age", "year", "deaths", "pop"]
     #data_list = [jnp.load("{}{}.npy".format(data_path, var)) for var in vars]
     #data = dict(zip(vars, data_list))
     data_df = pd.read_csv(data_path)
