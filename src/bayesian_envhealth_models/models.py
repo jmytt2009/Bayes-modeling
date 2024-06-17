@@ -7,7 +7,7 @@ import jax.numpy as jnp
 from typing import Optional
 from beartype import beartype
 
-
+# test
 @jaxtyped(typechecker=beartype)
 def model_intercept(
     pop: Int[Array, "data"],
